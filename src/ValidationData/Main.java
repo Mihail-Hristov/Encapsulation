@@ -23,11 +23,18 @@ public class Main {
                 System.out.println(ex.getMessage());
             }
         }
-        double bonus = Double.parseDouble(reader.readLine());
-        for (Person person : people) {
+        //double bonus = Double.parseDouble(reader.readLine());
+        /*for (Person person : people) {
             person.increaseSalary(bonus);
             System.out.println(person.toString());
-        }
-    }
+        }*/
 
+        Team team = new Team("Black Eagles");
+        for (Person person : people) {
+            team.addPlayer(person);
+        }
+
+        System.out.println(String.format("First team have %d players", team.getFirstTeam().size()));
+        System.out.println(String.format("Reserve team have %d players", team.getReserveTeam().size()));
+    }
 }

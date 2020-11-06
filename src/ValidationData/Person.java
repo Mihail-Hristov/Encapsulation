@@ -17,7 +17,7 @@ public class Person {
         return firstName;
     }
 
-    private void setFirstName(String firstName) {
+    public void setFirstName(String firstName) {
         if (firstName.length() >= 3) {
             this.firstName = firstName;
         }else {
@@ -29,7 +29,7 @@ public class Person {
         return this.lastName;
     }
 
-    private void setLastName(String lastName) {
+    public void setLastName(String lastName) {
         if (lastName.length() >= 3) {
             this.lastName = lastName;
         }else {
@@ -41,7 +41,7 @@ public class Person {
         return this.age;
     }
 
-    private void setAge(int age) {
+    public void setAge(int age) {
         if (age > 0) {
             this.age = age;
         }else {
@@ -53,7 +53,7 @@ public class Person {
         return this.salary;
     }
 
-    private void setSalary(double salary) {
+    public void setSalary(double salary) {
         if (salary >= 460.0) {
             this.salary = salary;
         }else {
