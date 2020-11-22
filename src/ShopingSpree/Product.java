@@ -10,24 +10,26 @@ public class Product {
     }
 
     private void setName(String name) {
-        if (!StringValidator.isValidName(name)) {
-            throw new IllegalArgumentException(ExceptionMessage.EXCEPTION_MESSAGE_FOR_INVALID_NAME);
+        boolean validName = NameValidator.validateName(name);
+        if (!validName) {
+            throw new IllegalArgumentException("Name cannot be empty");
         }
         this.name = name;
     }
 
+    public String getName() {
+        return name;
+    }
+
     private void setCost(double cost) {
-        if (!AmountValidator.IsNotNegativeAmount(cost)) {
-            throw new IllegalArgumentException(ExceptionMessage.EXCEPTION_MESSAGE_FOR_INCORRECT_AMOUNT);
+        boolean validCost = ValueValidator.validateValue(cost);
+        if (!validCost) {
+            throw new IllegalArgumentException("Money cannot be negative");
         }
         this.cost = cost;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
     public double getCost() {
-        return this.cost;
+        return cost;
     }
 }

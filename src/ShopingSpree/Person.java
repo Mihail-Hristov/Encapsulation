@@ -16,8 +16,9 @@ public class Person {
     }
 
     private void setName(String name) {
-        if (!StringValidator.isValidName(name)) {
-            throw new IllegalArgumentException(ExceptionMessage.EXCEPTION_MESSAGE_FOR_INVALID_NAME);
+        boolean validName = NameValidator.validateName(name);
+        if (!validName) {
+            throw new IllegalArgumentException("Name cannot be empty");
         }
         this.name = name;
     }
@@ -27,33 +28,37 @@ public class Person {
     }
 
     private void setMoney(double money) {
-        if (!AmountValidator.IsNotNegativeAmount(money)) {
-            throw new IllegalArgumentException(ExceptionMessage.EXCEPTION_MESSAGE_FOR_INCORRECT_AMOUNT);
+        boolean validMoney = ValueValidator.validateValue(money);
+        if (!validMoney) {
+            throw new IllegalArgumentException("Money cannot be negative");
         }
         this.money = money;
+    }
+
+    public void buyProduct(Product product) {
+        if (product.getCost() <= this.money) {
+            this.products.add(product);
+            this.money -= product.getCost();
+            System.out.println(String.format("%s bought %s", this.getName(), product.getName()));
+        } else {
+            System.out.println(String.format("%s can't afford %s", this.getName(), product.getName()));
+        }
     }
 
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
-        result.append(this.getName()).append(" - ");
-        if (this.products.isEmpty()){
-            result.append("Nothing bought");
-        }else {
+
+        result.append(String.format("%s - ", this.getName()));
+
+        if (products.size() > 0) {
             result.append(this.products.stream()
                     .map(Product::getName)
                     .collect(Collectors.joining(", ")));
+        } else {
+            result.append("Nothing bought");
         }
-        return result.toString();
-    }
 
-    public void buyProduct(Product product) {
-        if (this.money >= product.getCost()) {
-            this.products.add(product);
-            System.out.println(String.format("%s bought %s", this.getName(), product.getName()));
-            this.money -= product.getCost();
-        }else {
-            System.out.println(String.format("%s can't afford %s", this.getName(), product.getName()));
-        }
+        return result.toString().trim();
     }
 }

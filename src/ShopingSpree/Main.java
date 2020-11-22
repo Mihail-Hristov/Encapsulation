@@ -1,30 +1,55 @@
 package ShopingSpree;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        Map<String, Person> people = null;
-        Map<String, Product> products = null;
+        String[] personInfo = scanner.nextLine().split(";");
+        String[] productInfo = scanner.nextLine().split(";");
+
+        Map<String, Person> people = new LinkedHashMap<>();
+        Map<String, Product> products = new LinkedHashMap<>();
 
         try {
-            people = readPeople(scanner);
-            products = readProducts(scanner);
+            Arrays.stream(personInfo)
+                    .forEach(p -> {
+                        String[] tokens = p.split("=");
+                        String name = tokens[0];
+                        double money = Double.parseDouble(tokens[1]);
+                        people.put(name, new Person(name, money));
+                    });
         }catch (IllegalArgumentException ex) {
             System.out.println(ex.getMessage());
             return;
         }
 
+        try {
+            Arrays.stream(productInfo)
+                    .forEach(p -> {
+                        String[] tokens = p.split("=");
+                        String name = tokens[0];
+                        double cost = Double.parseDouble(tokens[1]);
+                        products.put(name, new Product(name, cost));
+                    });
+        }catch (IllegalArgumentException ex) {
+            System.out.println(ex.getMessage());
+            return;
+        }
+
+
         String input = scanner.nextLine();
 
         while (!"END".equals(input)) {
-            String[] token = input.split("\\s+");
-            String name = token[0];
-            String productName = token[1];
+            String[] tokens = input.split("\\s+");
+            String person = tokens[0];
+            String product = tokens[1];
 
-            people.get(name).buyProduct(products.get(productName));
+            people.get(person).buyProduct(products.get(product));
 
             input = scanner.nextLine();
         }
@@ -32,31 +57,5 @@ public class Main {
         for (Person person : people.values()) {
             System.out.println(person);
         }
-    }
-
-    public static Map<String, Person> readPeople(Scanner scanner) {
-        String[] peopleInfo = scanner.nextLine().split(";");
-        Map<String, Person> peopleForReturn = new LinkedHashMap<>();
-
-        for (String people : peopleInfo) {
-            String[] tokens = people.split("=");
-            Person person = new Person(tokens[0], Double.parseDouble(tokens[1]));
-            peopleForReturn.put(tokens[0], person);
-        }
-
-        return peopleForReturn;
-    }
-
-    private static Map<String, Product> readProducts(Scanner scanner) {
-        String[] productInfo = scanner.nextLine().split(";");
-        Map<String, Product> productsForReturn = new LinkedHashMap<>();
-
-        for (String product : productInfo) {
-            String[] tokens = product.split("=");
-            Product currentProduct = new Product(tokens[0], Double.parseDouble(tokens[1]));
-            productsForReturn.put(tokens[0], currentProduct);
-        }
-
-        return productsForReturn;
     }
 }
